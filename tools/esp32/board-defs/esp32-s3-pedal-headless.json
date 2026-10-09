@@ -1,0 +1,75 @@
+{
+  "id": "esp32-s3-pedal-headless",
+  "extends": "esp32-s3",
+  "adapter": "esp32-idf",
+  "mcu": "esp32s3",
+  "_comment": "Headless coyopedal build of the bare ESP32-S3-WROOM-1-N16R8 devkit (16MB quad flash, 8MB octal PSRAM, CH-series UART bridge, no panel, no codec). Mirrors the published esp32-s3-devkit-n16r8 except: the amoled-2.06 composable base compiles chip_bindings/audio/es8311.cpp whenever the app declares the audio capability (coyopedal always does), and that binding includes board::audio unconditionally — declaring no codec breaks the build even for a USB-host-only pedal. Same upstream gap as documented in mydocs ESP32-DOCS (still present in @geastack/targets 0.1.95). Workaround identical to the lcd-2 fork: PLACEHOLDER es8311 pins, nothing wired, amp silent; amp audio flows over USB host. Console is UART (bridge), NOT usb-serial-jtag.",
+  "flashSize": "16MB",
+  "console": {
+    "transport": "uart",
+    "uart": 0,
+    "baud": 115200
+  },
+  "psram": {
+    "mode": "octal",
+    "speed": 80
+  },
+  "chips": {
+    "audio": {
+      "driver": "es8311",
+      "interface": "i2s",
+      "pins": {
+        "mclk": 15,
+        "bclk": 16,
+        "ws": 17,
+        "dout": 18,
+        "din": 14,
+        "powerAmplifier": 13
+      }
+    }
+  },
+  "controls": {
+    "launcherButton": {
+      "pin": 0,
+      "activeLevel": 0
+    }
+  },
+  "partitions": {
+    "nvs": {
+      "type": "data",
+      "subtype": "nvs",
+      "offset": "0x9000",
+      "size": "0x6000"
+    },
+    "otadata": {
+      "type": "data",
+      "subtype": "ota",
+      "offset": "0xf000",
+      "size": "0x2000"
+    },
+    "phy_init": {
+      "type": "data",
+      "subtype": "phy",
+      "offset": "0x11000",
+      "size": "0x1000"
+    },
+    "ota_0": {
+      "type": "app",
+      "subtype": "ota_0",
+      "offset": "0x20000",
+      "size": "0x600000"
+    },
+    "ota_1": {
+      "type": "app",
+      "subtype": "ota_1",
+      "offset": "0x620000",
+      "size": "0x600000"
+    },
+    "storage": {
+      "type": "data",
+      "subtype": "spiffs",
+      "offset": "0xC20000",
+      "size": "0x3E0000"
+    }
+  }
+}

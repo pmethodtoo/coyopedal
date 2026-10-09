@@ -11,6 +11,7 @@ __pycache__/
 *.pyc
 .DS_Store
 src/native/services/remote_config.h
+mydocs
 
 # Playwright MCP page snapshots, written by the browser tooling.
 .playwright-mcp/

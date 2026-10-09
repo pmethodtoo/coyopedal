@@ -1,0 +1,16 @@
+{
+  "lcd-2": {
+    "target": "esp32-s3-waveshare-touch-lcd-2",
+    "appPlatform": "esp32",
+    "transports": {
+      "usbSerial": {
+        "serial": "28:84:85:88:CF:D0"
+      }
+    }
+  },
+  "s3-devkit": {
+    "target": "esp32-s3-pedal-headless",
+    "targetDefinition": "targets/esp32-s3-pedal-headless.json",
+    "appPlatform": "esp32"
+  }
+}

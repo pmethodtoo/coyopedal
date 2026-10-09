@@ -124,3 +124,26 @@ live console port = stuck in download mode, do `esptool run`.
   `src/native/services/remote_config.h` (`npm run remote:configure`).
 - Flash artifacts land in `build/` and `.gea/build/.../nam-pedalboard/`;
   `managed_components/` is regenerated — never commit or vendor it.
+
+## Headless devkit spin-off (esp32-s3-pedal-headless)
+
+The bare N16R8 devkit (UART bridge, no panel) runs the pristine repo brain
+with zero fork code — but the published `esp32-s3-devkit-n16r8` target hits
+the same upstream gaps as the LCD-2 (`GEA_BOARD_HAS_POWER` collision and the
+es8311 binding compiled for a codec-less board). The fix lives in gitignored
+`.gea/`, so it was stranded once already; the definitions are mirrored to
+`tools/esp32/board-defs/`. On a fresh clone:
+
+```bash
+cp tools/esp32/board-defs/esp32-s3-pedal-headless.json .gea/targets/
+# register the alias in .gea/boards.json (see boards.json.example):
+#   "s3-devkit": { "target": "esp32-s3-pedal-headless",
+#                  "targetDefinition": "targets/esp32-s3-pedal-headless.json",
+#                  "appPlatform": "esp32" }
+npm run build:firmware:s3-devkit   # gea build --board s3-devkit
+```
+
+Flash over the UART bridge (auto-reset works, unlike the LCD-2):
+`esptool write_flash 0x0 bootloader.bin 0x8000 partition-table.bin 0xf000
+ota_data_initial.bin 0x20000 pedalboard.bin` — verify the log reaches
+`Bootstrap complete; no display on this board` with `USB host installed=yes`.

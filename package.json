@@ -26,7 +26,8 @@
     "serve:web": "node scripts/serve-web.mjs",
     "install:lcd2-fork": "bash scripts/install-lcd2-fork.sh",
     "build:firmware:lcd2": "gea build --board lcd-2",
-    "flash:firmware:lcd2": "gea flash --board lcd-2"
+    "flash:firmware:lcd2": "gea flash --board lcd-2",
+    "build:firmware:s3-devkit": "gea build --board s3-devkit"
   },
   "devDependencies": {
     "@eslint/js": "latest",
@@ -404,6 +405,64 @@
               "offset": "0x8f0000",
               "size": "0x710000"
             }
+          },
+          "esp32-s3-pedal-headless": {
+            "nvs": {
+              "type": "data",
+              "subtype": "nvs",
+              "offset": "0x9000",
+              "size": "0x6000"
+            },
+            "otadata": {
+              "type": "data",
+              "subtype": "ota",
+              "offset": "0xf000",
+              "size": "0x2000"
+            },
+            "phy_init": {
+              "type": "data",
+              "subtype": "phy",
+              "offset": "0x11000",
+              "size": "0x1000"
+            },
+            "ota_0": {
+              "type": "app",
+              "subtype": "ota_0",
+              "offset": "0x20000",
+              "size": "0x400000"
+            },
+            "ota_1": {
+              "type": "app",
+              "subtype": "ota_1",
+              "offset": "0x420000",
+              "size": "0x400000"
+            },
+            "models": {
+              "type": "data",
+              "subtype": "0x40",
+              "offset": "0x820000",
+              "size": "0x40000",
+              "data": "build/factory/models.bin"
+            },
+            "presets": {
+              "type": "data",
+              "subtype": "0x41",
+              "offset": "0x860000",
+              "size": "0x10000",
+              "data": "build/factory/presets.json"
+            },
+            "user_models": {
+              "type": "data",
+              "subtype": "0x42",
+              "offset": "0x870000",
+              "size": "0x80000"
+            },
+            "storage": {
+              "type": "data",
+              "subtype": "spiffs",
+              "offset": "0x8f0000",
+              "size": "0x710000"
+            }
           }
         },
         "boards": {
@@ -440,6 +499,11 @@
               "GEA_EMBEDDED_DISPLAY_NATIVE_HEIGHT": 320,
               "GEA_EMBEDDED_DISPLAY_FLUSH_POOL_BYTES": 5120,
               "GEA_AUDIO_DMA_FRAMES": 160,
+              "GEA_BOARD_HAS_POWER": 0
+            }
+          },
+          "esp32-s3-pedal-headless": {
+            "defines": {
               "GEA_BOARD_HAS_POWER": 0
             }
           }
