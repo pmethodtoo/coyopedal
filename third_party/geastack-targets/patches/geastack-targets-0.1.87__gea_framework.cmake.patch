@@ -1,0 +1,28 @@
+--- a/targets/esp32/gea_framework.cmake	2026-10-09 07:26:28
++++ b/targets/esp32/gea_framework.cmake	2026-10-09 07:26:28
+@@ -139,7 +139,15 @@
+     # it and pooled freed memory in 2 MiB chunks that are never returned. Every build through this
+     # file is a board, and the runtime only tests that the macro is defined, so it is set here for
+     # the whole build: the app, main and the framework must agree on the pool layout.
+-    idf_build_set_property(COMPILE_DEFINITIONS "GEA_EMBEDDED_CPP_BOARD" APPEND)
++    # FORK (lcd-2): the epaper family passes GEA_EMBEDDED_CPP_BOARD as a
++    # quoted board string to the geatsc app archive; a bare global of the
++    # same name collides there under -Werror. Emit the identical quoted text
++    # (from the cache the family will force anyway) so duplicates agree.
++    if(GEA_EMBEDDED_CPP_BOARD)
++        idf_build_set_property(COMPILE_DEFINITIONS "GEA_EMBEDDED_CPP_BOARD=\"${GEA_EMBEDDED_CPP_BOARD}\"" APPEND)
++    else()
++        idf_build_set_property(COMPILE_DEFINITIONS "GEA_EMBEDDED_CPP_BOARD" APPEND)
++    endif()
+ endif()
+ 
+ # Linker fragments are absolute paths from the CLI. ldgen merges every
+@@ -270,7 +278,7 @@
+         # Filtering them keeps active-app capability/tuning changes from
+         # invalidating the stable framework component.
+         list(FILTER _gea_framework_definitions EXCLUDE REGEX
+-            "^(GEA_EMBEDDED_APP_USES_BLE|GEA_EMBEDDED_APP_USES_AUDIO|GEA_EMBEDDED_BLE_DISABLED|GEA_EMBEDDED_AUDIO_UNUSED|GEA_EMBEDDED_ENABLE_HTTPS|GEA_EMBEDDED_WIFI_DISABLED|GEA_EMBEDDED_DISPLAY_FUSE_REPLAY_FLUSH|GEA_EMBEDDED_SUBTREE_REVEAL_CHECK|GEA_EMBEDDED_SKIP_POSITION_INLINE_RECORD)(=.*)?$")
++            "^(GEA_EMBEDDED_CPP_BOARD|GEA_EMBEDDED_APP_USES_BLE|GEA_EMBEDDED_APP_USES_AUDIO|GEA_EMBEDDED_BLE_DISABLED|GEA_EMBEDDED_AUDIO_UNUSED|GEA_EMBEDDED_ENABLE_HTTPS|GEA_EMBEDDED_WIFI_DISABLED|GEA_EMBEDDED_DISPLAY_FUSE_REPLAY_FLUSH|GEA_EMBEDDED_SUBTREE_REVEAL_CHECK|GEA_EMBEDDED_SKIP_POSITION_INLINE_RECORD)(=.*)?$")
+         target_compile_definitions(${_gea_framework_lib} PRIVATE ${_gea_framework_definitions})
+     endif()
+ 

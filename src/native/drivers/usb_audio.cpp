@@ -2134,6 +2134,13 @@ IRAM_ATTR void client_task(void*) noexcept {
 std::atomic<bool> usb_host_installed{false};
 
 void usb_library_task(void* const client_task_handle) noexcept {
+#ifdef GEA_LCD2_DEBUG_CONSOLE
+    ESP_LOGW(kTag, "USB host DISABLED (debug console build)");
+    (void)client_task_handle;
+    while (true) {
+        vTaskDelay(pdMS_TO_TICKS(60000));
+    }
+#endif
     usb_host_config_t config{};
     config.skip_phy_setup = false;
     config.intr_flags = ESP_INTR_FLAG_LOWMED;

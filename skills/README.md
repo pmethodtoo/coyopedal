@@ -14,6 +14,7 @@ for a particular task.
 | [editing-the-gea-ui](editing-the-gea-ui/SKILL.md)                                 | Screens, stores, styles, the board boundary and the web preview  |
 | [editing-factory-models-and-presets](editing-factory-models-and-presets/SKILL.md) | Factory amps, the capture library and starter presets            |
 | [updating-gea-dependencies](updating-gea-dependencies/SKILL.md)                   | Bumping `@geastack` packages and checking what a version moved   |
+| [bringup-waveshare-lcd2](bringup-waveshare-lcd2/SKILL.md)                       | The Waveshare ESP32-S3-Touch-LCD-2 fork: install, build, flash, recover |
 
 Keep a skill short and current. When a command, path or default changes, update the skill in
 the same change; a stale skill misleads more than a missing one.

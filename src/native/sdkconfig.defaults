@@ -29,7 +29,7 @@ CONFIG_COMPILER_OPTIMIZATION_PERF=y
 # the display's DMA staging are claimed, so every kilobyte here is a kilobyte
 # those allocations do not get. Bring-up's deepest point uses about 2,700
 # bytes; 4096 is that plus a 1.5x margin.
-CONFIG_ESP_MAIN_TASK_STACK_SIZE=4096
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=16384
 # Per core, so this is two stacks. 1280 is the S3 default and the smallest
 # value that holds: the deepest callback the IPC task runs is
 # spi_flash_op_block_func, dispatched by esp_mmu_map() through
